@@ -11,7 +11,7 @@ func MustCompile(p interface{}) *regexp.Regexp {
 	case *regexp.Regexp:
 		return p.(*regexp.Regexp)
 	default:
-		panic("error p")
+		panic("不支持的正则表达式")
 	}
 }
 

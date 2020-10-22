@@ -22,12 +22,12 @@ func Init(option Option) {
 // ConfigLocalFilesystemLogger 切割日志和清理过期日志
 func ConfigLocalFilesystemLogger(option Option) {
 	// 创建目录
-	CreateLogDir(option.FilePath)
+	CreateLogDir(path.Join(option.DirPath, option.FilePath))
 	writerMap := lfshook.WriterMap{}
 	for _, level := range option.SplitLevel {
 		if level <= option.Level {
 			writer, err := rotatelogs.New(
-				fmt.Sprintf("%s_%s%s", option.FilePath, level.String(), extionName),
+				path.Join(option.DirPath, fmt.Sprintf("%s_%s%s", option.FilePath, level.String(), extionName)),
 				rotatelogs.WithMaxAge(option.MaxAge),
 				rotatelogs.WithRotationTime(option.RotationTime),
 			)
@@ -39,7 +39,7 @@ func ConfigLocalFilesystemLogger(option Option) {
 	}
 
 	writerAll, err := rotatelogs.New(
-		fmt.Sprintf("%s_%s%s", option.FilePath, "all", extionName),
+		path.Join(option.DirPath, fmt.Sprintf("%s_%s%s", option.FilePath, "all", extionName)),
 		rotatelogs.WithMaxAge(option.MaxAge),
 		rotatelogs.WithRotationTime(option.RotationTime),
 	)

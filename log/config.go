@@ -1,70 +1,57 @@
 package log
 
 import (
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
-// Option 日志参数
-type Option struct {
-	// 文件路径
-	FilePath string
-	// 文件最大保存时间
-	MaxAge time.Duration
-	// 日志切割时间间隔
-	RotationTime time.Duration
-	// 日志级别
-	Level logrus.Level
-	// 日志分割
-	SplitLevel []logrus.Level
+type Config struct {
+	Dir          string `mapstructure:"dir"`          // 日志目录
+	MaxAge       uint   `mapstructure:"maxAge"`       // 保存时间
+	RotationTime uint   `mapstructure:"rotationTime"` // 滚动时间
+	Level        string `mapstructure:"level"`        // 日志级别
+	SplitLevel   string `mapstructure:"splitLevel"`   // 分割日志级别
 }
 
-// NewOption 创建日志配置
-func NewOption(opts ...func(*Option)) Option {
-	option := &Option{
-		FilePath:     "%Y%m%d%H",
-		MaxAge:       time.Hour * 24 * 7,
-		RotationTime: time.Hour * 24,
-		Level:        logrus.TraceLevel,
+func LoadOption() (opt Option) {
+	cfg := Config{}
+	err := viper.UnmarshalKey("log", &cfg)
+	if err != nil {
+		panic(err)
 	}
-	for _, f := range opts {
-		f(option)
-	}
-	return *option
+	opt = cfg.Convert()
+	return
 }
 
-// WithFilePath WithFilePath
-func WithFilePath(filepath string) func(*Option) {
-	return func(o *Option) {
-		o.FilePath = filepath
+func (c *Config) Convert() Option {
+	opt := NewOption()
+	if c.Dir != "" {
+		opt.DirPath = c.Dir
 	}
-}
-
-// WithMaxAge WithMaxAge
-func WithMaxAge(d time.Duration) func(*Option) {
-	return func(o *Option) {
-		o.MaxAge = d
+	if c.MaxAge > 0 {
+		opt.MaxAge = time.Hour * 24 * time.Duration(c.MaxAge)
 	}
-}
-
-// WithRotationTime WithRotationTime
-func WithRotationTime(d time.Duration) func(*Option) {
-	return func(o *Option) {
-		o.RotationTime = d
+	if c.RotationTime > 0 {
+		opt.RotationTime = time.Hour * time.Duration(c.RotationTime)
 	}
-}
-
-// WithLevel WithLevel
-func WithLevel(level logrus.Level) func(*Option) {
-	return func(o *Option) {
-		o.Level = level
+	if c.Level != "" {
+		l, err := logrus.ParseLevel(c.Level)
+		if err != nil {
+			l = logrus.InfoLevel
+		}
+		opt.Level = l
 	}
-}
-
-// WithSplitLevel WithSplitLevel
-func WithSplitLevel(levels ...logrus.Level) func(*Option) {
-	return func(o *Option) {
-		o.SplitLevel = levels
+	if c.SplitLevel != "" {
+		levels := strings.Split(c.SplitLevel, ",")
+		for _, level := range levels {
+			l, err := logrus.ParseLevel(level)
+			if err == nil {
+				opt.SplitLevel = append(opt.SplitLevel, l)
+			}
+		}
 	}
+	return *opt
 }
