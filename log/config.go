@@ -23,7 +23,7 @@ type Option struct {
 // NewOption 创建日志配置
 func NewOption(opts ...func(*Option)) Option {
 	option := &Option{
-		FilePath:     "%Y%m%d%H.log",
+		FilePath:     "%Y%m%d%H",
 		MaxAge:       time.Hour * 24 * 7,
 		RotationTime: time.Hour * 24,
 		Level:        logrus.TraceLevel,
