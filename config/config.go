@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -19,7 +18,6 @@ func Init(name string, path string) {
 func UnmarshalKey(key string, rawVal interface{}) {
 	err := viper.UnmarshalKey(key, rawVal)
 	HandleError(err)
-	logrus.Errorf("config %s: %v", key, rawVal)
 }
 
 func HandleError(err error) {
