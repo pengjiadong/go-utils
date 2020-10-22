@@ -15,12 +15,12 @@ var (
 )
 
 // Init 初始化日志配置
-func Init(option Config) {
+func Init(option Option) {
 	ConfigLocalFilesystemLogger(option)
 }
 
 // ConfigLocalFilesystemLogger 切割日志和清理过期日志
-func ConfigLocalFilesystemLogger(option Config) {
+func ConfigLocalFilesystemLogger(option Option) {
 	// 创建目录
 	CreateLogDir(option.FilePath)
 	writerMap := lfshook.WriterMap{}
