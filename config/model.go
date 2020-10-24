@@ -35,21 +35,3 @@ func (c MongoConfig) String() string {
 	dns := fmt.Sprintf("mongodb://%s:%s@%s/%s", c.Username, c.Password, c.Host, c.Db)
 	return dns
 }
-
-func GetMySQL(name string) MySQLConfig {
-	c := MySQLConfig{}
-	UnmarshalKey(name, &c)
-	return c
-}
-
-func GetRedis(name string) RedisConfig {
-	c := RedisConfig{}
-	UnmarshalKey(name, &c)
-	return c
-}
-
-func GetMongo(name string) MongoConfig {
-	c := MongoConfig{}
-	UnmarshalKey(name, &c)
-	return c
-}
