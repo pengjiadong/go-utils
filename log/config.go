@@ -37,13 +37,13 @@ func (c *Config) Convert() Option {
 	if c.RotationTime > 0 {
 		opt.RotationTime = time.Hour * time.Duration(c.RotationTime)
 	}
-	if c.Level != "" {
-		l, err := logrus.ParseLevel(c.Level)
-		if err != nil {
-			l = logrus.InfoLevel
-		}
-		opt.Level = l
+
+	lvl, err := logrus.ParseLevel(c.Level)
+	if err != nil {
+		lvl = logrus.InfoLevel
 	}
+	opt.Level = lvl
+
 	if c.SplitLevel != "" {
 		levels := strings.Split(c.SplitLevel, ",")
 		for _, level := range levels {
