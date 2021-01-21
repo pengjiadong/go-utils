@@ -26,7 +26,7 @@ type Option struct {
 func NewOption(opts ...func(*Option)) *Option {
 	option := &Option{
 		FilePath:     "%Y%m%d%H",
-		DirPath:      "",
+		DirPath:      "logs",
 		MaxAge:       time.Hour * 24 * 7,
 		RotationTime: time.Hour * 24,
 		SplitLevel:   make([]logrus.Level, 0),

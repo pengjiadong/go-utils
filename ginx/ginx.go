@@ -30,6 +30,15 @@ func (r *Result) Response() {
 	r.c.JSON(r.statusCode, r)
 }
 
+// ContentType .
+// gin/binding.MIMEJSON
+func (r *Result) ContentType(value string) *Result {
+	key := "Content-Type"
+	r.c.Writer.Header().Del(key)
+	r.c.Header(key, value)
+	return r
+}
+
 // WriteString .
 func (r *Result) WriteString(data string) (int, error) {
 	return r.c.Writer.WriteString(data)
@@ -46,7 +55,6 @@ func (r *Result) Set(code int, msg string, data interface{}) *Result {
 // Set200 200
 func (r *Result) Set200(msg string, data interface{}) *Result {
 	r.statusCode = http.StatusOK
-
 	r.Set(200, msg, data)
 	return r
 }
