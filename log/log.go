@@ -15,8 +15,14 @@ var (
 )
 
 // Init 初始化日志配置
-func Init(option Option) {
-	ConfigLocalFilesystemLogger(option)
+func Init(option ...Option) {
+	var opt Option
+	if len(option) == 0 {
+		opt = LoadOption()
+	} else {
+		opt = option[0]
+	}
+	ConfigLocalFilesystemLogger(opt)
 }
 
 // ConfigLocalFilesystemLogger 切割日志和清理过期日志
