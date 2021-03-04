@@ -100,6 +100,7 @@ func Ok(c *gin.Context, msg string, data interface{}) {
 	c.JSON(http.StatusOK, Result{
 		Code: 200,
 		Msg:  msg,
+		Data: data,
 	})
 	return
 }
