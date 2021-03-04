@@ -17,4 +17,5 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.1
 	github.com/tebeka/strftime v0.1.5 // indirect
+	go.mongodb.org/mongo-driver v1.4.6
 )
