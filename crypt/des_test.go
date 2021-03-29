@@ -7,7 +7,7 @@ func TestEncrypt(t *testing.T) {
 		IV:  []byte("12345678"),
 		Key: []byte("test1234"),
 	}
-	r, err := d.Encrypt([]byte("abc"))
+	r, err := d.Encrypt("abc")
 	if err != nil {
 		t.Error(err)
 	}
